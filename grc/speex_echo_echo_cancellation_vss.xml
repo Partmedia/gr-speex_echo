@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<block>
+  <name>Echo Cancellation</name>
+  <key>speex_echo_echo_cancellation_vss</key>
+  <category>[Speex DSP]</category>
+  <import>import speex_echo</import>
+  <make>speex_echo.echo_cancellation_vss($frame_size, $filter_length)</make>
+  <param>
+    <name>Frame Size</name>
+    <key>frame_size</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Filter Length</name>
+    <key>filter_length</key>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>short</type>
+    <vlen>$frame_size</vlen>
+  </sink>
+
+  <sink>
+    <name>echo</name>
+    <type>short</type>
+    <vlen>$frame_size</vlen>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>short</type>
+    <vlen>$frame_size</vlen>
+  </source>
+
+  <doc>
+Wrapper for speex_echo_cancellation in libspeexdsp
+
+    in - Signal from the microphone (near end + far end echo)
+    echo - Signal played to the speaker (received from far end)
+    out - Near-end signal with echo removed 
+
+frame_size is the amount of data (in samples) you want to process at once. It is recommended to use a frame size in the order of 20 ms (or equal to the codec frame size) and make sure it is easy to perform an FFT of that size (powers of two are better than prime sizes).
+
+filter_length is the length (in samples) of the echo cancelling filter you want to use (also known as tail length). The recommended tail length is approximately the third of the room reverberation time.
+  </doc>
+</block>
